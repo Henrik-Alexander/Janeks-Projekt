@@ -48,13 +48,22 @@ coef(model.lm)
 data$prediction <- predict(model.lm, data.frame(data))
 #plotting the predicted values
 plot(data$Demo_ind, data$prediction)
-abline(a = 0.793 , b = 0.417, col="red", lwd=2)
+abline(a = 0.793 , b = 0.417, col="red", lwth=2)
 #calculation of the intercept
 -944.9413+0.47*2011.5+0.0000000035*14690000+993*0.00028
 
 ###checking for regression assumptions
 #normal distribution of errors
-hist(model.lm$residuals)  ##residuals are approximately normally distributed
+x <- model.lm$residuals
+h <- hist(x, breaks = 30, xlab = "Model Residuals", main = "Postregression Estimattion")
+xfit<- seq(min(x), max(x), length =2100 )
+yfit <- dnorm(xfit, mean=mean(x), sd = sd(x))
+yfit <- yfit*diff(h$mids[1:2])*length(x)
+lines(xfit, yfit, col = "red")
+
+##residuals are approximately normally distributed
+sd(model.lm$residuals)
+#qq plot
 qqnorm(model.lm$residuals);qqline(model.lm$residuals)  ##normal distribution is confirmed
     
 #check on symmetry of distribution skewness
